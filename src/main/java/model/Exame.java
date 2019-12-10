@@ -25,9 +25,11 @@ public class Exame {
     private BigInteger exameId;
 
     @ManyToOne
+    @Column(nullable = false)
     private Paciente paciente;
 
     @ManyToOne
+    @Column(nullable = false)
     private Medico medico;
 
     @Column(nullable = false)

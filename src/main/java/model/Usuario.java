@@ -29,6 +29,8 @@ public class Usuario {
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 
+    @Column(nullable = false)
     private String telefone;
+
     private String email;
 }
