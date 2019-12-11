@@ -2,9 +2,8 @@ package model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,26 +12,34 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Historico {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Getter
     private BigInteger historicoId;
 
     @ManyToOne
-    @Column(nullable = false)
+    @Getter @Setter
     private Paciente paciente;
 
-    @OneToMany(mappedBy = "historico", cascade = CascadeType.ALL)
-    @Column(nullable = false)
-    private List<Exame> exames;
+    @OneToMany(mappedBy = "historico")
+    @Getter @Setter
+    private List<Exame> exames = new ArrayList<>();
 
+    @Getter
     private BigDecimal nivelRadiacao;
+
+    @Getter
     private String risco;
+
+    public void setNivelRadiacao(BigDecimal nivelRadiacaoSoma) {
+        nivelRadiacao.add(nivelRadiacaoSoma);
+    }
 }

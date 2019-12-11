@@ -1,4 +1,4 @@
-package repository;
+package dao;
 
 import connection.Connection;
 import java.math.BigInteger;
@@ -16,16 +16,15 @@ import org.apache.logging.log4j.Logger;
  *
  * @author barbaradrummond
  */
-public class ExameRepositoryImpl implements ExameRepository {
+public class ExameDAO {
     private EntityManager entityManager = Connection.getConnection();
-    private static final Logger LOGGER = LogManager.getLogger(ExameRepositoryImpl.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(ExameDAO.class.getName());
 
     /**
      * Method that saves a new exame.
      *
      * @param exame Type: Exame
      */
-    @Override
     public void save(Exame exame) {
         try {
             if (entityManager.contains(exame)) {
@@ -49,7 +48,6 @@ public class ExameRepositoryImpl implements ExameRepository {
      *
      * @param exame Type: Exame
      */
-    @Override
     public void remove(Exame exame) {
         try {
             entityManager.getTransaction().begin();
@@ -63,7 +61,6 @@ public class ExameRepositoryImpl implements ExameRepository {
     }
 
     /** Method that removes all exames. */
-    @Override
     public void removeAll() {
         try {
             entityManager.getTransaction().begin();
@@ -82,7 +79,6 @@ public class ExameRepositoryImpl implements ExameRepository {
      * @param exameId Type: Long
      * @return Exame
      */
-    @Override
     public Exame findById(BigInteger exameId) {
         Exame exame = null;
 
@@ -100,7 +96,6 @@ public class ExameRepositoryImpl implements ExameRepository {
      *
      * @return List of Exame
      */
-    @Override
     public List<Exame> findAll() {
         List<Exame> exames = new ArrayList<>();
 
@@ -122,8 +117,8 @@ public class ExameRepositoryImpl implements ExameRepository {
     public List<Exame> getExamesByPaciente(Paciente paciente) {
         List<Exame> exames = new ArrayList<>();
 
-        HistoricoRepositoryImpl historicoRepositoryImpl = new HistoricoRepositoryImpl();
-        Historico historico = historicoRepositoryImpl.getHistoricoByPaciente(paciente);
+        HistoricoDAO historicoDAO = new HistoricoDAO();
+        Historico historico = historicoDAO.getHistoricoByPaciente(paciente);
         for (Exame exame : historico.getExames()) {
             LOGGER.info("Found OrderLine: {}", findById(exame.getExameId()));
             exames.add(exame);

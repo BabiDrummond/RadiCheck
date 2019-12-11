@@ -1,4 +1,4 @@
-package repository;
+package dao;
 
 import connection.Connection;
 import java.util.ArrayList;
@@ -13,16 +13,15 @@ import org.apache.logging.log4j.Logger;
  *
  * @author barbaradrummond
  */
-public class MedicoRepositoryImpl implements MedicoRepository {
+public class MedicoDAO {
     private EntityManager entityManager = Connection.getConnection();
-    private static final Logger LOGGER = LogManager.getLogger(MedicoRepositoryImpl.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(MedicoDAO.class.getName());
 
     /**
      * Method that saves a new medico.
      *
      * @param medico Type: Medico
      */
-    @Override
     public void save(Medico medico) {
         try {
             if (entityManager.contains(medico)) {
@@ -46,7 +45,6 @@ public class MedicoRepositoryImpl implements MedicoRepository {
      *
      * @param medico Type: Medico
      */
-    @Override
     public void remove(Medico medico) {
         try {
             entityManager.getTransaction().begin();
@@ -60,7 +58,6 @@ public class MedicoRepositoryImpl implements MedicoRepository {
     }
 
     /** Method that removes all medicos. */
-    @Override
     public void removeAll() {
         try {
             entityManager.getTransaction().begin();
@@ -79,7 +76,6 @@ public class MedicoRepositoryImpl implements MedicoRepository {
      * @param crm Type: String
      * @return Medico
      */
-    @Override
     public Medico findByCrm(String crm) {
         Medico medico = null;
 
@@ -97,7 +93,6 @@ public class MedicoRepositoryImpl implements MedicoRepository {
      *
      * @return List of Medico
      */
-    @Override
     public List<Medico> findAll() {
         List<Medico> medicos = new ArrayList<>();
 

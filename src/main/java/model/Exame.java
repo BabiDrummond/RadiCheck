@@ -25,11 +25,9 @@ public class Exame {
     private BigInteger exameId;
 
     @ManyToOne
-    @Column(nullable = false)
     private Paciente paciente;
 
     @ManyToOne
-    @Column(nullable = false)
     private Medico medico;
 
     @Column(nullable = false)
@@ -41,4 +39,7 @@ public class Exame {
 
     @Column(nullable = false)
     private String regiaoCorpo;
+
+    @ManyToOne (optional = true)
+    private Historico historico;
 }

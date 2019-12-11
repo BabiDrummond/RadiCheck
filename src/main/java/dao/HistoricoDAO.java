@@ -1,11 +1,10 @@
-package repository;
+package dao;
 
 import connection.Connection;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
-import model.Exame;
 import model.Historico;
 import model.Paciente;
 import org.apache.logging.log4j.LogManager;
@@ -16,16 +15,15 @@ import org.apache.logging.log4j.Logger;
  *
  * @author barbaradrummond
  */
-public class HistoricoRepositoryImpl implements HistoricoRepository {
+public class HistoricoDAO {
     private EntityManager entityManager = Connection.getConnection();
-    private static final Logger LOGGER = LogManager.getLogger(HistoricoRepositoryImpl.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(HistoricoDAO.class.getName());
 
     /**
      * Method that saves a new historico.
      *
      * @param historico Type: Historico
      */
-    @Override
     public void save(Historico historico) {
         try {
             if (entityManager.contains(historico)) {
@@ -49,7 +47,6 @@ public class HistoricoRepositoryImpl implements HistoricoRepository {
      *
      * @param historico Type: Historico
      */
-    @Override
     public void remove(Historico historico) {
         try {
             entityManager.getTransaction().begin();
@@ -63,7 +60,6 @@ public class HistoricoRepositoryImpl implements HistoricoRepository {
     }
 
     /** Method that removes all historicos. */
-    @Override
     public void removeAll() {
         try {
             entityManager.getTransaction().begin();
@@ -82,7 +78,6 @@ public class HistoricoRepositoryImpl implements HistoricoRepository {
      * @param historicoId Type: Long
      * @return Historico
      */
-    @Override
     public Historico findById(BigInteger historicoId) {
         Historico historico = null;
 
@@ -100,7 +95,6 @@ public class HistoricoRepositoryImpl implements HistoricoRepository {
      *
      * @return List of Historico
      */
-    @Override
     public List<Historico> findAll() {
         List<Historico> historicos = new ArrayList<>();
 

@@ -1,4 +1,4 @@
-package repository;
+package dao;
 
 import connection.Connection;
 import java.util.ArrayList;
@@ -13,16 +13,15 @@ import org.apache.logging.log4j.Logger;
  *
  * @author barbaradrummond
  */
-public class PacienteRepositoryImpl implements PacienteRepository {
+public class PacienteDAO {
     private EntityManager entityManager = Connection.getConnection();
-    private static final Logger LOGGER = LogManager.getLogger(PacienteRepositoryImpl.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(PacienteDAO.class.getName());
 
     /**
      * Method that saves a new paciente.
      *
      * @param paciente Type: Paciente
      */
-    @Override
     public void save(Paciente paciente) {
         try {
             if (entityManager.contains(paciente)) {
@@ -46,7 +45,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
      *
      * @param paciente Type: Paciente
      */
-    @Override
     public void remove(Paciente paciente) {
         try {
             entityManager.getTransaction().begin();
@@ -60,7 +58,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
     }
 
     /** Method that removes all pacientes. */
-    @Override
     public void removeAll() {
         try {
             entityManager.getTransaction().begin();
@@ -79,7 +76,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
      * @param cpf Type: String
      * @return Paciente
      */
-    @Override
     public Paciente findByCpf(String cpf) {
         Paciente paciente = null;
 
@@ -97,7 +93,6 @@ public class PacienteRepositoryImpl implements PacienteRepository {
      *
      * @return List of Paciente
      */
-    @Override
     public List<Paciente> findAll() {
         List<Paciente> pacientes = new ArrayList<>();
 
