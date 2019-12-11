@@ -15,4 +15,11 @@ public class Paciente extends Usuario {
     @Id
     @Column(nullable = false)
     private String cpf;
+
+    @Override
+    public String toString() {
+        return "Paciente{" +
+                "cpf='" + cpf + '\'' +
+                '}';
+    }
 }
