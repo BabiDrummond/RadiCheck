@@ -1,8 +1,5 @@
 import connection.Connection;
-import dao.PacienteDAO;
-import java.util.Date;
 import java.util.Scanner;
-import model.Paciente;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        do{
+        do {
             LOGGER.info("Seja bem vindo! Escolha uma das opções: \n" +
                     "1. Cadastro paciente\n" +
                     "2. Cadastro medico\n" +
