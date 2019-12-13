@@ -107,23 +107,23 @@ public class ExameDAO {
         return exames;
     }
 
-    /**
-     * Searches an order for orderLines.
-     *
-     * @param paciente Type: Paciente
-     * @return List of Exames
-     */
-    public List<Exame> getExamesByPaciente(Paciente paciente) {
-        List<Exame> exames = new ArrayList<>();
-
-        HistoricoDAO historicoDAO = new HistoricoDAO();
-        Historico historico = historicoDAO.getHistoricoByPaciente(paciente);
-        for (Exame exame : historico.getExames()) {
-            LOGGER.info("Found OrderLine: {}", findById(exame.getExameId()));
-            exames.add(exame);
-        }
-        return exames;
-    }
+//    /**
+//     * Searches an order for orderLines.
+//     *
+//     * @param paciente Type: Paciente
+//     * @return List of Exames
+//     */
+//    public List<Exame> getExamesByPaciente(Paciente paciente) {
+//        List<Exame> exames = new ArrayList<>();
+//
+//        HistoricoDAO historicoDAO = new HistoricoDAO();
+//        Historico historico = historicoDAO.getHistoricoByPaciente(paciente);
+//        for (Exame exame : historico.getExames()) {
+//            LOGGER.info("Found OrderLine: {}", findById(exame.getExameId()));
+//            exames.add(exame);
+//        }
+//        return exames;
+//    }
 
     /**
      * Method that sets an entity manager.

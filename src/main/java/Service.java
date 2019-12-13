@@ -115,11 +115,11 @@ public class Service {
         exame.setRegiaoCorpo(regiaoCorpo);
 
         exameDAO.save(exame);
-        atualizaHistorico(exame.getPaciente(), exame, radiacao);
+       // atualizaHistorico(exame.getPaciente(), exame, radiacao);
     }
 
     public void atualizaHistorico(Paciente paciente, Exame exame, double radiacao) {
-        Historico historico = historicoDAO.getHistoricoByPaciente(paciente);
+        Historico historico = historicoDAO.getHistoricoByPaciente(paciente.getCpf());
         historico.getExames().add(exame);
         historico.setPaciente(paciente);
         historico.setNivelRadiacao(radiacao);
@@ -133,7 +133,7 @@ public class Service {
         String cpfPaciente = scanner.next();
 
         if(pacienteDAO.findAll().contains(cpfPaciente)){
-            LOGGER.info("Historico encontrado: {}", historicoDAO.getHistoricoByPaciente(pacienteDAO.findByCpf(cpfPaciente)));
+            LOGGER.info("Historico encontrado: {}", historicoDAO.getHistoricoByPaciente(cpfPaciente));
         } else {
             LOGGER.error("Historico nao encontrado para paciente: {} ", cpfPaciente);
         }

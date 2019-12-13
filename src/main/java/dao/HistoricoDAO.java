@@ -4,6 +4,7 @@ import connection.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -114,24 +115,24 @@ public class HistoricoDAO {
     /**
      * Searches an order for orderLines.
      *
-     * @param paciente Type: Paciente
+     * @param paciente_cpf Type: Paciente
      * @return Historico
      */
-    public Historico getHistoricoByPaciente(Paciente paciente) {
+    public Historico getHistoricoByPaciente(String paciente_cpf) {
         Historico historico = null;
 
         try {
-//            Query query = entityManager.createQuery("SELECT h FROM Historico h WHERE h.paciente=:paciente");
-//            query.setParameter("paciente", paciente);
+//            Query query = entityManager.createQuery("SELECT h FROM Historico h WHERE h.paciente=:paciente_cpf");
+//            query.setParameter("paciente_cpf", paciente_cpf);
 //            historico = (Historico) query.getSingleResult();
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<Historico> criteriaQuery = criteriaBuilder.createQuery(Historico.class);
             Root<Historico> root = criteriaQuery.from(Historico.class);
-            ParameterExpression<Paciente> parameterExpression = criteriaBuilder.parameter(Paciente.class);
+            ParameterExpression<String> parameterExpression = criteriaBuilder.parameter(String.class);
             criteriaQuery.where(criteriaBuilder.equal(root.get("paciente"), parameterExpression));
 
             TypedQuery<Historico> query = entityManager.createQuery(criteriaQuery);
-            query.setParameter(parameterExpression, paciente);
+            query.setParameter(parameterExpression, paciente_cpf);
 
             historico = (Historico) query.getSingleResult();
 
