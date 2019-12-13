@@ -12,7 +12,6 @@
         <class>model.Historico</class>
         <class>model.Medico</class>
         <class>model.Paciente</class>
-        <class>model.Usuario</class>
         <properties>
             <!--JDBC's properties-->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>

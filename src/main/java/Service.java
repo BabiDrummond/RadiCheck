@@ -2,7 +2,6 @@ import dao.ExameDAO;
 import dao.HistoricoDAO;
 import dao.MedicoDAO;
 import dao.PacienteDAO;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Scanner;
 import model.Exame;
@@ -11,6 +10,7 @@ import model.Medico;
 import model.Paciente;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 public class Service {
     private static final Logger LOGGER = LogManager.getLogger(Service.class.getName());
@@ -51,38 +51,6 @@ public class Service {
         pacienteDAO.save(paciente);
     }
 
-    public void salvarExame(){
-        Exame exame = new Exame();
-
-        LOGGER.info("Informe CPF do paciente: ");
-        String cpfPaciente = scanner.next();
-        exame.setPaciente(pacienteDAO.findByCpf(cpfPaciente));
-
-        LOGGER.info("Informe CRM do médico: ");
-        String crmMedico = scanner.next();
-        exame.setMedico(medicoDAO.findByCrm(crmMedico));
-
-        LOGGER.info("Dia do exame: ");
-        int dia = (scanner.nextInt());
-        LOGGER.info("Mês (em número): ");
-        int mes = (scanner.nextInt());
-        LOGGER.info("Ano: ");
-        int ano = (scanner.nextInt());
-        Date dataExame= new Date(ano, mes, dia);
-        exame.setDataExame(dataExame);
-
-        LOGGER.info("Nível de radiação: ");
-        BigDecimal radiacao = scanner.nextBigDecimal();
-        exame.setRadiacao(radiacao);
-
-        LOGGER.info("Região do corpo: ");
-        String regiaoCorpo = scanner.next();
-        exame.setRegiaoCorpo(regiaoCorpo);
-
-        exameDAO.save(exame);
-        atualizaHistorico(cpfPaciente, exame, radiacao);
-    }
-
     public void salvarMedico(){
         Medico medico = new Medico();
 
@@ -118,23 +86,56 @@ public class Service {
         medicoDAO.save(medico);
     }
 
-    public void atualizaHistorico(String cpfPaciente, Exame exame, BigDecimal radiacao) {
-        Historico historico = historicoDAO.getHistoricoByPaciente(pacienteDAO.findByCpf(cpfPaciente));
-        historico.getExames().add(exame);
-        historico.setPaciente(pacienteDAO.findByCpf(cpfPaciente));
-        historico.setNivelRadiacao(radiacao);
+    public void salvarExame(){
+        Exame exame = new Exame();
 
-        BigDecimal radiacaoTotal = historico.getNivelRadiacao();
-//        if(radiacaoTotal > new BigDecimal("2.0") ){
-//        }
+        LOGGER.info("Informe CPF do paciente: ");
+        String cpfPaciente = scanner.next();
+        exame.setPaciente(pacienteDAO.findByCpf(cpfPaciente));
+
+        LOGGER.info("Informe CRM do médico: ");
+        String crmMedico = scanner.next();
+        exame.setMedico(medicoDAO.findByCrm(crmMedico));
+
+        LOGGER.info("Dia do exame: ");
+        int dia = (scanner.nextInt());
+        LOGGER.info("Mês (em número): ");
+        int mes = (scanner.nextInt());
+        LOGGER.info("Ano: ");
+        int ano = (scanner.nextInt());
+        Date dataExame= new Date(ano, mes, dia);
+        exame.setDataExame(dataExame);
+
+        LOGGER.info("Nível de radiação: ");
+        double radiacao = scanner.nextDouble();
+        exame.setRadiacao(radiacao);
+
+        LOGGER.info("Região do corpo: ");
+        String regiaoCorpo = scanner.next();
+        exame.setRegiaoCorpo(regiaoCorpo);
+
+        exameDAO.save(exame);
+        atualizaHistorico(exame.getPaciente(), exame, radiacao);
+    }
+
+    public void atualizaHistorico(Paciente paciente, Exame exame, double radiacao) {
+        Historico historico = historicoDAO.getHistoricoByPaciente(paciente);
+        historico.getExames().add(exame);
+        historico.setPaciente(paciente);
+        historico.setNivelRadiacao(radiacao);
+        historico.setRisco(historico.getNivelRadiacao());
 
         historicoDAO.save(historico);
     }
 
-    public Historico consultarHistorico() {
+    public void consultarHistorico() throws NullPointerException {
         LOGGER.info("Informe CPF do paciente para o qual deseja consultar o histórico: ");
         String cpfPaciente = scanner.next();
 
-        return historicoDAO.getHistoricoByPaciente(pacienteDAO.findByCpf(cpfPaciente));
+        if(pacienteDAO.findAll().contains(cpfPaciente)){
+            LOGGER.info("Historico encontrado: {}", historicoDAO.getHistoricoByPaciente(pacienteDAO.findByCpf(cpfPaciente)));
+        } else {
+            LOGGER.error("Historico nao encontrado para paciente: {} ", cpfPaciente);
+        }
     }
 }

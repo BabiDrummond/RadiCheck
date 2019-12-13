@@ -1,10 +1,14 @@
 package dao;
 
 import connection.Connection;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
 import model.Historico;
 import model.Paciente;
 import org.apache.logging.log4j.LogManager;
@@ -78,7 +82,7 @@ public class HistoricoDAO {
      * @param historicoId Type: Long
      * @return Historico
      */
-    public Historico findById(BigInteger historicoId) {
+    public Historico findById(Long historicoId) {
         Historico historico = null;
 
         try {
@@ -117,10 +121,23 @@ public class HistoricoDAO {
         Historico historico = null;
 
         try {
-            historico = entityManager.find(Historico.class, paciente.getCpf());
-            LOGGER.info("Found historico from paciente: {}", historico.getPaciente().getCpf());
+//            Query query = entityManager.createQuery("SELECT h FROM Historico h WHERE h.paciente=:paciente");
+//            query.setParameter("paciente", paciente);
+//            historico = (Historico) query.getSingleResult();
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Historico> criteriaQuery = criteriaBuilder.createQuery(Historico.class);
+            Root<Historico> root = criteriaQuery.from(Historico.class);
+            ParameterExpression<Paciente> parameterExpression = criteriaBuilder.parameter(Paciente.class);
+            criteriaQuery.where(criteriaBuilder.equal(root.get("paciente"), parameterExpression));
+
+            TypedQuery<Historico> query = entityManager.createQuery(criteriaQuery);
+            query.setParameter(parameterExpression, paciente);
+
+            historico = (Historico) query.getSingleResult();
+
+            LOGGER.info("Found historico from paciente: {}", historico.getPaciente());
         } catch (Exception exception) {
-            LOGGER.error("Fail to find historico by paciente: {}. {}", historico.getPaciente().getCpf(), exception.getMessage());
+            LOGGER.error("Fail to find historico by paciente: {}. {}", historico.getPaciente(), exception.getMessage());
         }
         return historico;
     }

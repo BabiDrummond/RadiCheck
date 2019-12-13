@@ -1,7 +1,6 @@
 package dao;
 
 import connection.Connection;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -79,7 +78,7 @@ public class ExameDAO {
      * @param exameId Type: Long
      * @return Exame
      */
-    public Exame findById(BigInteger exameId) {
+    public Exame findById(Long exameId) {
         Exame exame = null;
 
         try {

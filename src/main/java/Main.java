@@ -32,9 +32,10 @@ public class Main {
                     service.salvarExame();
                     break;
                 case 4:
-
+                    service.consultarHistorico();
                     break;
                 case 9:
+                    LOGGER.info("Encerrando programa.");
       }
         } while (chooseNumber != 9);
 
